@@ -10,11 +10,13 @@ function net = simple_perceptron_online (err, t, g, n)
 
 	i = 0;
 
-	while( 0.5*sum(sum((t{2}-g(-[ ones(N,1).*(-1) t{1}] * W)).^2)) > err ) 
+	while( (e = 0.5*sum(sum((t{2}-g([ ones(N,1).*(-1) t{1}] * W)).^2))/N)> err ) 
+		%printf("E(W) = %f\n", e);
 		i = i + 1;
 		vec = randperm(N);
 		for k=1:N
 			W = W + n * [ -1 ; (t{1}(vec(k),:))'] * (t{2}(vec(k),:)-g([ -1 t{1}(vec(k),:)] * W));
+			%fflush(stdout);
 		end
 	end
 	i
