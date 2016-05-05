@@ -5,7 +5,7 @@
 % g: transference function
 % n: etha
 function net = simple_perceptron_online (err, t, g, n)
-	N = size(t{1})(1); M = size(t{1})(2); S = size(t{2}(2));
+	N = size(t{1})(1); M = size(t{1})(2); S = size(t{2})(2);
 	W = rand(M+1,S).*2.-1;	% random values between -1,1
 
 	i = 0;
