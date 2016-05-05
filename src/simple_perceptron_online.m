@@ -10,7 +10,7 @@ function net = simple_perceptron_online (err, t, g, n)
 
 	i = 0;
 
-	while( 0.5*sum((t{2}-g(-[ ones(N,1).*(-1) t{1}] * W)).^2) > err ) 
+	while( 0.5*sum(sum((t{2}-g(-[ ones(N,1).*(-1) t{1}] * W)).^2)) > err ) 
 		i = i + 1;
 		vec = randperm(N);
 		for k=1:N
