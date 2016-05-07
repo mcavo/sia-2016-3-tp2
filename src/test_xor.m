@@ -4,8 +4,7 @@ function ret = test_xor()
 	% initialize net
 	nett = initialize_mutilayer_network([2 4 1],-0.5,0.5);
 	% XOR training set
-	t{1} = [ 0 0 ; 0 1 ; 1 0 ; 1 1 ];
-	t{2} = [ 0 ; 1 ; 1 ; 0 ];
+	t = get_training_set(2, @xor);
 	% Learn
 	net = multilayer_perceptron_online(nett,t,0.01,@tanh_ft,@tanh_ft_der,0.5,1);
 	% Check
