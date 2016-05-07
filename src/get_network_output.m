@@ -5,10 +5,10 @@
 % g:		transference function
 %
 %
-function o = get_network_output(net, in, g) 
+function o = get_network_output(net, in, g, b) 
 	layer_in = in;
 	for m=1:size(net)(2)
-		layer_out = g([(ones(size(layer_in)(1),1)*(-1)) layer_in]*net{m});
+		layer_out = g(b,[(ones(size(layer_in)(1),1)*(-1)) layer_in]*net{m});
 		layer_in = layer_out;
 	end
 	o = layer_out;
