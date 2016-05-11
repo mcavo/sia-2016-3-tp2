@@ -19,7 +19,7 @@ function smart_net = multilayer_perceptron_batch_adaptative_etha(net,t,err,g,g_d
 	counter = 0;
 	alpha_val = alpha;
 	oldE = err;
-	oldNet;
+	oldNet = net;
 
 	layer_in = t{1};
 	for m=1:M
@@ -43,13 +43,16 @@ function smart_net = multilayer_perceptron_batch_adaptative_etha(net,t,err,g,g_d
 		if (E-oldE<0)
 			counter = counter + 1;
 			if (counter>=K)
-				n = n + n*b;
+				n = n + a;
 			end
 		end
 		if (E==oldE)
 			% NO SE QUE HACER! Reinicio el contador?
+			counter=0;
 		end
-		
+		n
+		E
+		fflush(stdout);
 		oldNet = net;		
 		oldE = E;
 
