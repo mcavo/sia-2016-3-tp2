@@ -39,7 +39,7 @@ function smart_net = multilayer_perceptron_batch_momentum(net,t,err,g,g_der,beth
 		layer_in = t{1};
 
 		for m=1:M
-			net{m} = net{m} + newDeltaW{m} + a*oldDeltaW{m};
+			net{m} = net{m} + newDeltaW{m} + alpha*oldDeltaW{m};
 			oldDeltaW{m} = newDeltaW{m};
 			newDeltaW{m} = zeros(size(net{m}));
 

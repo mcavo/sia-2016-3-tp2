@@ -27,18 +27,13 @@ function smart_net = multilayer_perceptron_online_momentum(net,t,err,g,g_der,bet
 
 		for k=1:N
 			%we must update V for pattern k
-			layer_in = t{1}(vec(k),:);
-			for m=1:M
-				layer_out = g(betha,([-1 layer_in]*net{m}));
-				V{m}(vec(k),:) = layer_out; % g(hm,vec(k))
-				layer_in = layer_out;
-			end
+			V_k = feedfoward(net,t{1}(vec(k),:),g,b);
 
-			delta{M} = g_der(b,V{M}(vec(k),:)).*(t{2}(vec(k),:)-V{M}(vec(k),:));
+			delta{M} = g_der(b,V_k{M}).*(t{2}(vec(k),:)-V_k{M});
 
 			for m=M:-1:2
-				delta{m-1} = g_der(betha,V{m-1}(vec(k),:)).*(delta{m}*(net{m}(2:end,:))');
-				newDeltaW = n*[ -1 V{m-1}(vec(k),:)]'*delta{m}
+				delta{m-1} = g_der(betha,V_k{m-1}).*(delta{m}*(net{m}(2:end,:))');
+				newDeltaW = n*[ -1 V_k{m-1}]'*delta{m}
 				net{m} = net{m} + newDeltaW +alpha*deltaW{m};
 				deltaW{m} = newDeltaW;
 			end
@@ -49,12 +44,7 @@ function smart_net = multilayer_perceptron_online_momentum(net,t,err,g,g_der,bet
 
 		end
 
-		layer_in = t{1};
-		for m=1:M
-			layer_out = g(betha,([(ones(N,1)*(-1)) layer_in]*net{m}));
-			V{m} = layer_out; % g(hm)
-			layer_in = layer_out;
-		end
+		V = feedfoward(net,t{1},g,b);
 
 	end
 
