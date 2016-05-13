@@ -33,26 +33,19 @@ function smart_net = multilayer_perceptron_batch_adaptative_etha(net,t,err,g,g_d
 
 	% TODO: Preguntar por el historial de redes.... 
 	while ((E=(0.5*sum(sum((t{2}-V{M}).^2))/N)) > err)
+
 		alpha = alpha_val;
-		if (E-oldE>0)
-			n = n*(1-b);
-			counter = 0;
-			alpha = 0;
-			net = oldNet;
-		end
 		if (E-oldE<0)
 			counter = counter + 1;
 			if (counter>=K)
 				n = n + a;
 			end
+		else
+			n = n*(1-b);
+			counter = 0;
+			alpha = 0;
+			net = oldNet;		
 		end
-		if (E==oldE)
-			% NO SE QUE HACER! Reinicio el contador?
-			counter=0;
-		end
-		n
-		E
-		fflush(stdout);
 		oldNet = net;		
 		oldE = E;
 
