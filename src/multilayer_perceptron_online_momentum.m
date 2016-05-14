@@ -27,24 +27,24 @@ function smart_net = multilayer_perceptron_online_momentum(net,t,err,g,g_der,bet
 
 		for k=1:N
 			%we must update V for pattern k
-			V_k = feedfoward(net,t{1}(vec(k),:),g,b);
+			V_k = feedfoward(net,t{1}(vec(k),:),g,betha);
 
-			delta{M} = g_der(b,V_k{M}).*(t{2}(vec(k),:)-V_k{M});
+			delta{M} = g_der(betha,V_k{M}).*(t{2}(vec(k),:)-V_k{M});
 
 			for m=M:-1:2
 				delta{m-1} = g_der(betha,V_k{m-1}).*(delta{m}*(net{m}(2:end,:))');
-				newDeltaW = n*[ -1 V_k{m-1}]'*delta{m}
+				newDeltaW = n*[ -1 V_k{m-1}]'*delta{m};
 				net{m} = net{m} + newDeltaW +alpha*deltaW{m};
 				deltaW{m} = newDeltaW;
 			end
 
-			newDeltaW = n*[ -1 t{1}(vec(k),:)]'*delta{1}
+			newDeltaW = n*[ -1 t{1}(vec(k),:)]'*delta{1};
 			net{1} = net{1} + newDeltaW +alpha*deltaW{1};
 			deltaW{1} = newDeltaW;
 
 		end
 
-		V = feedfoward(net,t{1},g,b);
+		V = feedfoward(net,t{1},g,betha);
 
 	end
 

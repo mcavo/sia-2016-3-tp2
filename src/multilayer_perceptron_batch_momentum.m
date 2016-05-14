@@ -27,7 +27,7 @@ function smart_net = multilayer_perceptron_batch_momentum(net,t,err,g,g_der,beth
 
 		% a * sum (deltaW) = sum (a * deltaW)
 
-		delta{M} = betha*((1-(V{M}).^2)).*(t{2}-V{M});
+		delta{M} = g_der(betha,V{M}).*(t{2}-V{M});
 
 		for m=M:-1:2
 			delta{m-1} = g_der(betha,V{m-1}).*(delta{m}*(net{m}(2:end,:))');

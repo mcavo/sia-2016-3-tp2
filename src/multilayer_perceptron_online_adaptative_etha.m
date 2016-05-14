@@ -28,7 +28,6 @@ function smart_net = multilayer_perceptron_online_adaptative_etha(net,t,err,g,g_
 	end
 
 	while ((E=(0.5*sum(sum((t{2}-V{M}).^2))/N)) > err)
-
 		alpha = alpha_val;
 
 		if (E-oldE<0)
@@ -50,9 +49,9 @@ function smart_net = multilayer_perceptron_online_adaptative_etha(net,t,err,g,g_
 
 		for k=1:N
 			%we must update V for pattern k
-			V_k = feedfoward(net,t{1}(vec(k),:),g,b);
+			V_k = feedfoward(net,t{1}(vec(k),:),g,betha);
 
-			delta{M} = g_der(b,V_k{M}).*(t{2}(vec(k),:)-V_k{M});
+			delta{M} = g_der(betha,V_k{M}).*(t{2}(vec(k),:)-V_k{M});
 
 			for m=M:-1:2
 				delta{m-1} = g_der(betha,V_k{m-1}).*(delta{m}*(net{m}(2:end,:))');
@@ -67,10 +66,10 @@ function smart_net = multilayer_perceptron_online_adaptative_etha(net,t,err,g,g_
 
 		end
 
-		V = feedfoward(net,t{1},g,b);
+		V = feedfoward(net,t{1},g,betha);
 
 	end
-
+	
 	smart_net = net;
 
 end

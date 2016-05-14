@@ -49,7 +49,7 @@ function smart_net = multilayer_perceptron_batch_adaptative_etha(net,t,err,g,g_d
 		oldNet = net;		
 		oldE = E;
 
-		delta{M} = betha*((1-(V{M}).^2)).*(t{2}-V{M});
+		delta{M} = g_der(betha,V{M}).*(t{2}-V{M});
 
 		for m=M:-1:2
 			delta{m-1} = g_der(betha,V{m-1}).*(delta{m}*(net{m}(2:end,:))');
@@ -61,7 +61,7 @@ function smart_net = multilayer_perceptron_batch_adaptative_etha(net,t,err,g,g_d
 		layer_in = t{1};
 
 		for m=1:M
-			net{m} = net{m} + newDeltaW{m} + a*oldDeltaW{m};
+			net{m} = net{m} + newDeltaW{m} + alpha*oldDeltaW{m};
 			oldDeltaW{m} = newDeltaW{m};
 			newDeltaW{m} = zeros(size(net{m}));
 
