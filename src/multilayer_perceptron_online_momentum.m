@@ -13,12 +13,10 @@
 function smart_net = multilayer_perceptron_online_momentum(net,t,err,g,g_der,betha,n,alpha)
 	N = size(t{1})(1); I = size(t{1})(2); S = size(t{2})(2); M = size(net)(2);
 
-	layer_in = t{1};
+	V = feedfoward(net,t{1},g,betha);
+
 	for m=1:M
 		deltaW{m} = zeros(size(net{m}));
-		layer_out = g(betha,([(ones(N,1)*(-1)) layer_in]*net{m}));
-		V{m} = layer_out; % g(hm)
-		layer_in = layer_out;
 	end
 
 	while (0.5*sum(sum((t{2}-V{M}).^2))/N > err)

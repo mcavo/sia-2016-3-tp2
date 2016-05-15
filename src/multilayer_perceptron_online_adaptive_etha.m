@@ -10,7 +10,7 @@
 % betha: betha
 % n: etha
 % alpha: alpha
-function smart_net = multilayer_perceptron_online_adaptative_etha(net,t,err,g,g_der,betha,n,alpha,a,b)
+function smart_net = multilayer_perceptron_online_adaptive_etha(net,t,err,g,g_der,betha,n,alpha,a,b)
 	N = size(t{1})(1); I = size(t{1})(2); S = size(t{2})(2); M = size(net)(2);
 
 	K=10; % Counter limit.
@@ -19,12 +19,10 @@ function smart_net = multilayer_perceptron_online_adaptative_etha(net,t,err,g,g_
 	oldE = err;
 	oldNet = net;
 
-	layer_in = t{1};
+	V = feedfoward(net,t{1},g,betha);
+
 	for m=1:M
 		deltaW{m} = zeros(size(net{m}));
-		layer_out = g(betha,([(ones(N,1)*(-1)) layer_in]*net{m}));
-		V{m} = layer_out; % g(hm)
-		layer_in = layer_out;
 	end
 
 	while ((E=(0.5*sum(sum((t{2}-V{M}).^2))/N)) > err)
@@ -41,6 +39,8 @@ function smart_net = multilayer_perceptron_online_adaptative_etha(net,t,err,g,g_
 			alpha = 0;
 			net = oldNet;		
 		end
+
+		fflush(stdout);
 
 		oldNet = net;		
 		oldE = E;
@@ -69,7 +69,7 @@ function smart_net = multilayer_perceptron_online_adaptative_etha(net,t,err,g,g_
 		V = feedfoward(net,t{1},g,betha);
 
 	end
-	
+
 	smart_net = net;
 
 end
