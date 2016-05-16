@@ -28,8 +28,28 @@ function smart_net = multilayer_perceptron_batch_adaptive_etha(net,t,err,g,g_der
 	end
 
 	% TODO: Preguntar por el historial de redes.... 
-	while ((E=(0.5*sum(sum((t{2}-V{M}).^2))/N)) > err)
+	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
 
+	step = 0;
+	x(1) = 0;
+	yetha(1) = n;
+	yerr(1) = E;
+
+	figure (1)
+	plot(x(1), yerr(1));
+	vh = get(gca,'children');
+	title('Error variation', 'fontsize', 20);
+    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
+	figure(2)
+	plot(x(1), yetha(1));
+	vh2 = get(gca,'children');
+	title('Etha variation', 'fontsize', 20, 'fontname', 'avenir next');
+    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
+
+	while (E > err)
+		step=step+1;
 		alpha = alpha_val;
 		if (E-oldE<0)
 			counter = counter + 1;
@@ -60,6 +80,15 @@ function smart_net = multilayer_perceptron_batch_adaptive_etha(net,t,err,g,g_der
 		oldDeltaW{1} = newDeltaW{1};
 
 		V = feedfoward(net,t{1},g,betha);
+		E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+
+		x(end+1)=step;
+		yetha(end+1)=n;
+		yerr(end+1)=E;
+		figure(1)
+		set(vh, 'xdata',x, 'ydata', yerr); 
+		figure(2)
+		set(vh2, 'xdata',x, 'ydata', yetha); 
 
 	end
 
