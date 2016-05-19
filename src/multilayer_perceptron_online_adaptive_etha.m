@@ -86,11 +86,11 @@ function smart_net = multilayer_perceptron_online_adaptive_etha(net,t,err,g,g_de
 				n = n + a;
 			end
 		else
-			n = n*(1-b);
 			counter = 0;
 			alpha = 0;
 			% 
 			if(!random || rand()>0.5) % random => rand
+				n = n*(1-b);
 				net = oldNet;
 				E = oldE;
 				xerr(end+1)=step;
