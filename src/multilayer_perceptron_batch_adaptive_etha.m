@@ -12,7 +12,7 @@
 % alpha: alpha
 % a:
 % b:
-function smart_net = multilayer_perceptron_batch_adaptive_etha(net,t,err,g,g_der,betha,n,alpha,a,b)
+function smart_net = multilayer_perceptron_batch_adaptive_etha(net,t,err,g,g_der,betha,n,alpha,a,b,random)
 	N = size(t{1})(1); I = size(t{1})(2); S = size(t{2})(2); M = size(net)(2);
 
 	K=10; % Counter limit.
@@ -31,39 +31,25 @@ function smart_net = multilayer_perceptron_batch_adaptive_etha(net,t,err,g,g_der
 	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
 
 	step = 0;
-	x(1) = 0;
+	xerr(1) = 0;
+	xetha(1) = 0;
 	yetha(1) = n;
 	yerr(1) = E;
 
 	figure (1)
-	plot(x(1), yerr(1));
+	plot(xerr(1), yerr(1));
 	vh = get(gca,'children');
 	title('Error variation', 'fontsize', 20);
     xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
-    ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
 	figure(2)
-	plot(x(1), yetha(1));
+	plot(xetha(1), yetha(1));
 	vh2 = get(gca,'children');
 	title('Etha variation', 'fontsize', 20, 'fontname', 'avenir next');
     xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
     ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
 
 	while (E > err)
-		step=step+1;
-		alpha = alpha_val;
-		if (E-oldE<0)
-			counter = counter + 1;
-			if (counter>=K)
-				n = n + a;
-			end
-		else
-			n = n*(1-b);
-			counter = 0;
-			alpha = 0;
-			net = oldNet;		
-		end
-		oldNet = net;		
-		oldE = E;
 
 		delta{M} = g_der(betha,V{M}).*(t{2}-V{M});
 
@@ -80,15 +66,40 @@ function smart_net = multilayer_perceptron_batch_adaptive_etha(net,t,err,g,g_der
 		oldDeltaW{1} = newDeltaW{1};
 
 		V = feedfoward(net,t{1},g,betha);
+		oldE = E;
 		E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
 
-		x(end+1)=step;
-		yetha(end+1)=n;
+		step = step+1;
+		xerr(end+1)=step;
 		yerr(end+1)=E;
+
+		if (E-oldE<0)
+			alpha = alpha_val;
+			counter = counter + 1;
+			if (counter>=K)
+				n = n + a;
+			end
+		else
+			counter = 0;
+			alpha = 0;
+			% 
+			if(!random || rand()>0.5) % random => rand
+				n = n*(1-b);
+				net = oldNet;
+				E = oldE;
+				xerr(end+1)=step;
+				yerr(end+1)=E;
+			end
+		end
+
 		figure(1)
-		set(vh, 'xdata',x, 'ydata', yerr); 
+		set(vh, 'xdata',xerr, 'ydata', yerr);
+
+		xetha(end+1)=step;
+		yetha(end+1)=n;
+
 		figure(2)
-		set(vh2, 'xdata',x, 'ydata', yetha); 
+		set(vh2, 'xdata',xetha, 'ydata', yetha); 
 
 	end
 

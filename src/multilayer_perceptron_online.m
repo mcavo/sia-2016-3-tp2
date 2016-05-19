@@ -12,7 +12,25 @@ function smart_net = multilayer_perceptron_online(net,t,err,g,g_der,n,b)
 
 	V = feedfoward(net,t{1},g,b);
 
-	while (0.5*sum(sum((t{2}-V{M}).^2))/N > err)
+	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+
+	step = 0;
+	xerr(1) = 0;
+	yerr(1) = E;
+	figure (1)
+	plot(xerr(1), yerr(1));
+	vh = get(gca,'children');
+	title('Error variation', 'fontsize', 20);
+    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
+    figure (2)
+	plot(xerr(1), yerr(1));
+	vh2 = get(gca,'children');
+	title('Error variation', 'fontsize', 20);
+    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
+
+	while (E > err)
 		vec = randperm(N);
 		for k=1:N
 			%we must update V for pattern k
@@ -31,6 +49,17 @@ function smart_net = multilayer_perceptron_online(net,t,err,g,g_der,n,b)
 		end
 
 		V = feedfoward(net,t{1},g,b);
+
+		step = step+1;
+		E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+
+		xerr(end+1)=step;
+		yerr(end+1)=E;
+
+		figure(1)
+		set(vh, 'xdata',xerr, 'ydata', yerr);
+		figure(2)
+		set(vh2, 'xdata',xerr, 'ydata', yerr);
 
 	end
 

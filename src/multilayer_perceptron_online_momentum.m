@@ -15,11 +15,29 @@ function smart_net = multilayer_perceptron_online_momentum(net,t,err,g,g_der,bet
 
 	V = feedfoward(net,t{1},g,betha);
 
+	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+
+	step = 0;
+	xerr(1) = 0;
+	yerr(1) = E;
+	figure (1)
+	plot(xerr(1), yerr(1));
+	vh = get(gca,'children');
+	title('Error variation', 'fontsize', 20);
+    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
+    figure (2)
+	plot(xerr(1), yerr(1));
+	vh2 = get(gca,'children');
+	title('Error variation', 'fontsize', 20);
+    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
+
 	for m=1:M
 		deltaW{m} = zeros(size(net{m}));
 	end
 
-	while (0.5*sum(sum((t{2}-V{M}).^2))/N > err)
+	while (E > err)
 
 		vec = randperm(N);
 
@@ -43,6 +61,16 @@ function smart_net = multilayer_perceptron_online_momentum(net,t,err,g,g_der,bet
 		end
 
 		V = feedfoward(net,t{1},g,betha);
+
+		E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+		step = step+1;
+		xerr(end+1)=step;
+		yerr(end+1)=E;
+
+		figure(1)
+		set(vh, 'xdata',xerr, 'ydata', yerr);
+		figure(2)
+		set(vh2, 'xdata',xerr, 'ydata', yerr);
 
 	end
 
