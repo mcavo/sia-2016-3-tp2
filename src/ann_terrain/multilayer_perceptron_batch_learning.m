@@ -72,8 +72,7 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,err,g,g_der,beth
 					n = n*(1-b);
 					net = oldNet;
 					E = oldE;
-					xerr(end+1)=step;
-					yerr(end+1)=E;
+					yerr(end)=E;
 				end
 			end
 		end
