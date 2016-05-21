@@ -122,7 +122,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,t2,err,err2,g,g
 	printf('Training Sample Learnt:\t%f%%\n',lr_t1);
 	V = feedfoward(net,t2{1},g,betha);
 	lr_t2 = mean(((t2{2}-V{M}).^2)' < err2)
-    printf('Testing Sample Leart:\t%f%%\n',lr_t2);
+    printf('Testing Sample Learnt:\t%f%%\n',lr_t2);
 
     smart_net = net;
 
