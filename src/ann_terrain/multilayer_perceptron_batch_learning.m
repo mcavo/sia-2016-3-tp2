@@ -12,15 +12,12 @@
 % alpha: alpha
 function smart_net = multilayer_perceptron_batch_learning(net,t,err,g,g_der,betha,n,alpha,a,b,K,random,p)
 
-	N = size(t{1})(1); 
-	M = size(net)(2);
-	I = size(t{1})(2); 
-	S = size(t{2})(2); 
-
+	N = size(t{1})(1); M = size(net)(2); I = size(t{1})(2); S = size(t{2})(2); 
 
 	V = feedfoward(net,t{1},g,betha);
 
 	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+
 	alpha_val = alpha; counter = 0;
 	seasons = 0; patterns = 0;
 
@@ -40,58 +37,54 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,err,g,g_der,beth
     ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
 
     for m=1:M
-		deltaW{m} = zeros(size(net{m}));
+		oldDeltaW{m} = zeros(size(net{m}));
 	end
 
     while (E > err)
 
-    	vec = randperm(N);
-		for k=1:N
+    	seasons = seasons+1;
+    	patterns = patterns+N;
 
-			patterns = patterns+1;
-			%we must update V for pattern k
-			V_k = feedfoward(net,t{1}(vec(k),:),g,betha);
-			oldNet = net;
-			[net,deltaW] = backpropagation_online (net,t{1}(vec(k),:),t{2}(vec(k),:),V_k,g_der,alpha,betha,deltaW,n);
-			V = feedfoward(net,t{1},g,betha);
+    	oldNet = net;
+    	[net,oldDeltaW] = backpropagation(net,t{1},t{2},V,g_der,alpha,betha,oldDeltaW,n);
 
-			step = step+1;
-			oldE = E;
-			E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+    	V = feedfoward(net,t{1},g,betha);
 
-			xerr(end+1)=step;
-			yerr(end+1)=E;
-			if (a != 0 && b != 0)
-				
-				if (E-oldE<0)
-					alpha = alpha_val;
-					counter = counter + 1;
-					if (counter>=K)
-						n = n + a;
-					end
-				else
-					counter = 0;
-					alpha = 0;
-					% 
-					if(!random || rand()<=p) % random => rand
-						n = n*(1-b);
-						net = oldNet;
-						E = oldE;
-						xerr(end+1)=step;
-						yerr(end+1)=E;
-					end
+		oldE = E;
+		E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+
+		step = step+1;
+		xerr(end+1)=step;
+		yerr(end+1)=E;
+
+		if(a!=0 && b!=0)
+			if (E-oldE<0)
+				alpha = alpha_val;
+				counter = counter + 1;
+				if (counter>=K)
+					n = n + a;
 				end
-			end	
-			figure(1)
-			set(vh, 'xdata',xerr, 'ydata', yerr);
-
-			xetha(end+1)=step; yetha(end+1)=n;
-
-			figure(2)
-			set(vh2, 'xdata',xetha, 'ydata', yetha); 
+			else
+				counter = 0;
+				alpha = 0;
+				% 
+				if(!random || rand()>0.5) % random => rand
+					n = n*(1-b);
+					net = oldNet;
+					E = oldE;
+					xerr(end+1)=step;
+					yerr(end+1)=E;
+				end
+			end
 		end
+		figure(1)
+		set(vh, 'xdata',xerr, 'ydata', yerr);
 
-		seasons = seasons+1;
+		xetha(end+1)=step;
+		yetha(end+1)=n;
+
+		figure(2)
+		set(vh2, 'xdata',xetha, 'ydata', yetha); 
 
     end
 

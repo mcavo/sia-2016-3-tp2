@@ -20,8 +20,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 
 	V = feedfoward(net,t{1},g,betha);
 
-	E=(0.5*sum(sum((t{2}-V{M}).^2))/N)
-	fflush(stdout);
+	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
 	alpha_val = alpha; counter = 0;
 	seasons = 0; patterns = 0;
 

@@ -1,11 +1,6 @@
 function [retnet,deltaW] = backpropagation (net,t_1,t_2,V,g_der,alpha,betha,deltaW,n)
 	M = size(net)(2);
-
 	N = size(t_1)(1);
-
-	
-
-
 	delta{M} = g_der(betha,V{M}).*(t_2-V{M});
 
 	for m=M:-1:2
