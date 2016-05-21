@@ -11,12 +11,8 @@
 % n: etha
 % alpha: alpha
 function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,betha,n,alpha,a,b,K,random,p)
-
-	N = size(t{1})(1); 
-	M = size(net)(2);
-	I = size(t{1})(2); 
-	S = size(t{2})(2); 
-
+	tic_online = tic();
+	N = size(t{1})(1); M = size(net)(2); I = size(t{1})(2); S = size(t{2})(2); 
 
 	V = feedfoward(net,t{1},g,betha);
 
@@ -57,7 +53,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 
 			step = step+1;
 			oldE = E;
-			E=(0.5*sum(sum((t{2}-V{M}).^2))/N)
+			E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
 			fflush(stdout);
 
 			xerr(end+1)=step;
@@ -98,7 +94,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 
     printf('Analyzed seasons:\t%d\n',seasons);
     printf('Analyzed patterns:\t%d\n',patterns);
-
+    toc(tic_online);
     smart_net = net;
 
 end

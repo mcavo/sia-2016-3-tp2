@@ -11,7 +11,7 @@
 % n: etha
 % alpha: alpha
 function smart_net = multilayer_perceptron_batch_learning(net,t,err,g,g_der,betha,n,alpha,a,b,K,random,p)
-
+	tic_batch = tic();
 	N = size(t{1})(1); M = size(net)(2); I = size(t{1})(2); S = size(t{2})(2); 
 
 	V = feedfoward(net,t{1},g,betha);
@@ -89,6 +89,7 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,err,g,g_der,beth
 
     printf('Analyzed seasons:\t%d\n',seasons);
     printf('Analyzed patterns:\t%d\n',patterns);
+    toc(tic_batch);
 
     smart_net = net;
 
