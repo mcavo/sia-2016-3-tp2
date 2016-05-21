@@ -1,16 +1,31 @@
-% Parameters
+% smart_net = multilayer_perceptron_online_learning(net,t,t2,err,g,g_der,betha,n,alpha,a,b,K,random,p)
+%
+% Output
+% smartnet : trained neural network - cell array of M elements - M the amount of layers (hidden + output)
+% 	* smartnet{m}:	matrix (I+1)xO - I amount of input values - O amount of output values
+%
+% Input
 % net: neural network - cell array of M elements - M the amount of layers (hidden + output)
 % 	* net{m}:	matrix (I+1)xO - I amount of input values - O amount of output values
-% err: error
 % t: training set - Cell array
-% 	* t{1}: matrix NxI - N amount of test cases - I amount of input values
-% 	* t{2}: matrix NxS - N amount of test cases - S amount output values
+% 	* t{1}: matrix NxI - N amount of training cases - I amount of input values
+% 	* t{2}: matrix NxS - N amount of training cases - S amount output values
+% t2: testing set - Cell array
+% 	* t2{1}: matrix N2xI - N2 amount of test cases - I amount of input values
+% 	* t2{2}: matrix N2xS - N2 amount of test cases - S amount output values
+% err: error
+% err2: error 2
 % g: 
 % g_der:
 % betha: betha
 % n: etha
 % alpha: alpha
-function smart_net = multilayer_perceptron_batch_learning(net,t,err,g,g_der,betha,n,alpha,a,b,K,random,p)
+% a:
+% b:
+% K:
+% random:
+% p:
+function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,err2,g,g_der,betha,n,alpha,a,b,K,random,p)
 	tic_batch = tic();
 	N = size(t{1})(1); M = size(net)(2); I = size(t{1})(2); S = size(t{2})(2); 
 
@@ -87,9 +102,14 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,err,g,g_der,beth
 
     end
 
+    toc(tic_online);
     printf('Analyzed seasons:\t%d\n',seasons);
     printf('Analyzed patterns:\t%d\n',patterns);
-    toc(tic_batch);
+    lr_t1 = mean(((t{2}-V{M}).^2)' < err);
+	printf('Lalalala:\t%f%%\n',lr_t1);
+	V = feedfoward(net,t2{1},g,betha);
+	lr_t2 = mean(((t2{2}-V{M}).^2)' < err2);
+    printf('Lalalala2:\t%f%%\n',lr_t2);
 
     smart_net = net;
 
