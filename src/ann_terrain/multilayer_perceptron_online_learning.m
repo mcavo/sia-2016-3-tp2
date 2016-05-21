@@ -34,7 +34,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,t2,err,err2,g,g
 	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
 	alpha_val = alpha; counter = 0;
 	seasons = 0; patterns = 0;
-
+	counter2=0;
 	step = 0;
 	xerr(1) = 0; yerr(1) = E; xetha(1) = 0; yetha(1) = n;
 	figure (1)
@@ -89,32 +89,40 @@ function smart_net = multilayer_perceptron_online_learning(net,t,t2,err,err2,g,g
 						n = n*(1-b);
 						net = oldNet;
 						E = oldE;
-						xerr(end+1)=step;
-						yerr(end+1)=E;
+						yerr(end)=E;
 					end
 				end
 			end	
-			figure(1)
-			set(vh, 'xdata',xerr, 'ydata', yerr);
-
-			xetha(end+1)=step; yetha(end+1)=n;
-
-			figure(2)
-			set(vh2, 'xdata',xetha, 'ydata', yetha); 
+			xetha(end+1)=step;
+			yetha(end+1)=n;
+			counter2++;
+			if(counter2 ==5000)
+				counter2 = 0;
+				figure(1)
+				set(vh, 'xdata',xerr, 'ydata', yerr);
+				figure(2)
+				set(vh2, 'xdata',xetha, 'ydata', yetha); 
+			end
 		end
-
 		seasons = seasons+1;
 
     end
+
+	figure(1)
+	set(vh, 'xdata',xerr, 'ydata', yerr);
+
+	figure(2)
+	set(vh2, 'xdata',xetha, 'ydata', yetha); 
+
 
     toc(tic_online);
     printf('Analyzed seasons:\t%d\n',seasons);
     printf('Analyzed patterns:\t%d\n',patterns);
     lr_t1 = mean(((t{2}-V{M}).^2)' < err)
-	printf('Lalalala:\t%f%%\n',lr_t1);
+	printf('Training Sample Learnt:\t%f%%\n',lr_t1);
 	V = feedfoward(net,t2{1},g,betha);
 	lr_t2 = mean(((t2{2}-V{M}).^2)' < err2)
-    printf('Lalalala2:\t%f%%\n',lr_t2);
+    printf('Testing Sample Leart:\t%f%%\n',lr_t2);
 
     smart_net = net;
 

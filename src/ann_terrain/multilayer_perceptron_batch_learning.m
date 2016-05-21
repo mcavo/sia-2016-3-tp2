@@ -35,6 +35,7 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,err2,g,g_
 
 	alpha_val = alpha; counter = 0;
 	seasons = 0; patterns = 0;
+	counter2 = 0;
 
 	step = 0;
 	xerr(1) = 0; yerr(1) = E; xetha(1) = 0; yetha(1) = n;
@@ -91,18 +92,32 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,err2,g,g_
 				end
 			end
 		end
-		figure(1)
-		set(vh, 'xdata',xerr, 'ydata', yerr);
-
 		xetha(end+1)=step;
 		yetha(end+1)=n;
+		counter2++;
+		if(counter2 ==5000)
+			counter2 = 0;
+			figure(1)
+			set(vh, 'xdata',xerr, 'ydata', yerr);
 
-		figure(2)
-		set(vh2, 'xdata',xetha, 'ydata', yetha); 
+			figure(2)
+			set(vh2, 'xdata',xetha, 'ydata', yetha); 
+		end
+	
 
     end
 
-    toc(tic_online);
+
+	figure(1)
+	set(vh, 'xdata',xerr, 'ydata', yerr);
+
+	figure(2)
+	set(vh2, 'xdata',xetha, 'ydata', yetha); 
+
+
+
+
+    toc(tic_batch);
     printf('Analyzed seasons:\t%d\n',seasons);
     printf('Analyzed patterns:\t%d\n',patterns);
     lr_t1 = mean(((t{2}-V{M}).^2)' < err);
