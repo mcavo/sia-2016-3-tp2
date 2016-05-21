@@ -74,7 +74,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 					counter = 0;
 					alpha = 0;
 					% 
-					if(!random || rand()>0.5) % random => rand
+					if(!random || rand()<=p) % random => rand
 						n = n*(1-b);
 						net = oldNet;
 						E = oldE;

@@ -60,7 +60,7 @@ function smart_net = multilayer_perceptron_online(net,t,err,g,g_der,n,b)
 		set(vh, 'xdata',xerr, 'ydata', yerr);
 		figure(2)
 		set(vh2, 'xdata',xerr, 'ydata', yerr);
-
+		pause(0.1);
 	end
 
 	smart_net = net;
