@@ -12,11 +12,16 @@
 % alpha: alpha
 function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,betha,n,alpha,a,b,K,random,p)
 
-	N = size(t{1})(1); I = size(t{1})(2); S = size(t{2})(2); M = size(net)(2);
+	N = size(t{1})(1); 
+	M = size(net)(2);
+	I = size(t{1})(2); 
+	S = size(t{2})(2); 
 
-	V = feedfoward(net,t{1},g,b);
 
-	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+	V = feedfoward(net,t{1},g,betha);
+
+	E=(0.5*sum(sum((t{2}-V{M}).^2))/N)
+	fflush(stdout);
 	alpha_val = alpha; counter = 0;
 	seasons = 0; patterns = 0;
 
@@ -49,45 +54,45 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 			V_k = feedfoward(net,t{1}(vec(k),:),g,betha);
 			oldNet = net;
 			[net,deltaW] = backpropagation_online (net,t{1}(vec(k),:),t{2}(vec(k),:),V_k,g_der,alpha,betha,deltaW,n);
+			V = feedfoward(net,t{1},g,betha);
 
+			step = step+1;
+			oldE = E;
+			E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+
+			xerr(end+1)=step;
+			yerr(end+1)=E;
+			if (a != 0 && b != 0)
+				
+				if (E-oldE<0)
+					alpha = alpha_val;
+					counter = counter + 1;
+					if (counter>=K)
+						n = n + a;
+					end
+				else
+					counter = 0;
+					alpha = 0;
+					% 
+					if(!random || rand()>0.5) % random => rand
+						n = n*(1-b);
+						net = oldNet;
+						E = oldE;
+						xerr(end+1)=step;
+						yerr(end+1)=E;
+					end
+				end
+			end	
+			figure(1)
+			set(vh, 'xdata',xerr, 'ydata', yerr);
+
+			xetha(end+1)=step; yetha(end+1)=n;
+
+			figure(2)
+			set(vh2, 'xdata',xetha, 'ydata', yetha); 
 		end
 
 		seasons = seasons+1;
-
-		V = feedfoward(net,t{1},g,betha);
-
-		step = step+1;
-		oldE = E;
-		E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
-
-		xerr(end+1)=step;
-		yerr(end+1)=E;
-		if (E-oldE<0)
-			alpha = alpha_val;
-			counter = counter + 1;
-			if (counter>=K)
-				n = n + a;
-			end
-		else
-			counter = 0;
-			alpha = 0;
-			% 
-			if(!random || rand()>0.5) % random => rand
-				n = n*(1-b);
-				net = oldNet;
-				E = oldE;
-				xerr(end+1)=step;
-				yerr(end+1)=E;
-			end
-		end
-
-		figure(1)
-		set(vh, 'xdata',xerr, 'ydata', yerr);
-
-		xetha(end+1)=step; yetha(end+1)=n;
-
-		figure(2)
-		set(vh2, 'xdata',xetha, 'ydata', yetha); 
 
     end
 
