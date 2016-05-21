@@ -13,7 +13,7 @@
 function smart_net = multilayer_perceptron_online_adaptive_etha(net,t,err,g,g_der,betha,n,alpha,a,b,random)
 	N = size(t{1})(1); I = size(t{1})(2); S = size(t{2})(2); M = size(net)(2);
 
-	K=5; % Counter limit.
+	K=2; % Counter limit.
 	counter = 0;
 	alpha_val = alpha;
 	oldE = err;
@@ -38,7 +38,7 @@ function smart_net = multilayer_perceptron_online_adaptive_etha(net,t,err,g,g_de
 	vh = get(gca,'children');
 	title('Error variation', 'fontsize', 20);
     xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
-    ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
+    ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
 	figure(2)
 	plot(xetha(1), yetha(1));
 	vh2 = get(gca,'children');
