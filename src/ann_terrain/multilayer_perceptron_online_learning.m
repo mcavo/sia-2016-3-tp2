@@ -53,12 +53,13 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 			%we must update V for pattern k
 			V_k = feedfoward(net,t{1}(vec(k),:),g,betha);
 			oldNet = net;
-			[net,deltaW] = backpropagation_online (net,t{1}(vec(k),:),t{2}(vec(k),:),V_k,g_der,alpha,betha,deltaW,n);
+			[net,deltaW] = backpropagation(net,t{1}(vec(k),:),t{2}(vec(k),:),V_k,g_der,alpha,betha,deltaW,n);
 			V = feedfoward(net,t{1},g,betha);
 
 			step = step+1;
 			oldE = E;
-			E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
+			E=(0.5*sum(sum((t{2}-V{M}).^2))/N)
+			fflush(stdout);
 
 			xerr(end+1)=step;
 			yerr(end+1)=E;
