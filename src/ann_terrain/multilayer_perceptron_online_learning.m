@@ -17,7 +17,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 	V = feedfoward(net,t{1},g,b);
 
 	E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
-
+	alpha_val = alpha; counter = 0;
 	seasons = 0; patterns = 0;
 
 	step = 0;
@@ -47,8 +47,8 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 			patterns = patterns+1;
 			%we must update V for pattern k
 			V_k = feedfoward(net,t{1}(vec(k),:),g,betha);
-
-			[net,deltaW] = backpropagation_online (net,V_k,g_der,betha)
+			oldNet = net;
+			[net,deltaW] = backpropagation_online (net,t{1}(vec(k),:),t{2}(vec(k),:),V_k,g_der,alpha,betha,deltaW,n);
 
 		end
 
@@ -57,11 +57,11 @@ function smart_net = multilayer_perceptron_online_learning(net,t,err,g,g_der,bet
 		V = feedfoward(net,t{1},g,betha);
 
 		step = step+1;
+		oldE = E;
 		E=(0.5*sum(sum((t{2}-V{M}).^2))/N);
 
 		xerr(end+1)=step;
 		yerr(end+1)=E;
-
 		if (E-oldE<0)
 			alpha = alpha_val;
 			counter = counter + 1;
