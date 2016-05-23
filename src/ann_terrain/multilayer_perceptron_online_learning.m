@@ -68,8 +68,9 @@ function smart_net = multilayer_perceptron_online_learning(net,t,t2,lr1,lr2,max_
 
 		for k=1:N
 			patterns = patterns+1;
-			%we must update V for pattern k
-			V_k = feedfoward(net,t{1}(vec(k),:),g,betha);
+			for m=1:M
+				V_k{m} = V{m}(vec(k),:);
+			end
 			oldNet = net;
 			[net,deltaW] = backpropagation(net,t{1}(vec(k),:),t{2}(vec(k),:),V_k,g_der,alpha,betha,deltaW,n);
 			
@@ -95,9 +96,7 @@ function smart_net = multilayer_perceptron_online_learning(net,t,t2,lr1,lr2,max_
 						n = n*(1-b);
 						net = oldNet;
 						E = oldE;
-						E2 = oldE2;
 						yerr(end) = E;
-						yerr2(end) = E2;
 					end
 				end
 			end	
@@ -143,11 +142,11 @@ function smart_net = multilayer_perceptron_online_learning(net,t,t2,lr1,lr2,max_
     printf('Testing set Error: %d\n',E2);
     printf('Analyzed seasons:\t%d\n',seasons);
     printf('Analyzed patterns:\t%d\n',patterns);
-    lr_t1 = mean(((t{2}-V{M}).^2)' < lr1)
-	printf('Training Sample Learnt:\t%f%%\n',lr_t1);
+    lr_t1 = mean(((t{2}-V{M}).^2)' <= lr1)
+	printf('Training Sample Learnt:\t%f%%\n',lr_t1*100);
 	V = feedfoward(net,t2{1},g,betha);
-	lr_t2 = mean(((t2{2}-V2{M}).^2)' < lr2)
-    printf('Testing Sample Learnt:\t%f%%\n',lr_t2);
+	lr_t2 = mean(((t2{2}-V2{M}).^2)' <= lr2)
+    printf('Testing Sample Learnt:\t%f%%\n',lr_t2*100);
 
     smart_net = net;
 
