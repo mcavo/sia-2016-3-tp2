@@ -13,8 +13,8 @@
 % t2: testing set - Cell array
 % 	* t2{1}: matrix N2xI - N2 amount of test cases - I amount of input values
 % 	* t2{2}: matrix N2xS - N2 amount of test cases - S amount output values
-% lr1: learning rate for the training set
-% lr2: learning rate for the testing set
+% err:
+% lr: learning rate
 % max_seasons:
 % g: activation function
 % g_der:
@@ -26,7 +26,7 @@
 % K: 
 % random: 
 % p: 
-function smart_net = multilayer_perceptron_batch_learning(net,t,t2,lr1,lr2,max_seasons,g,g_der,betha,n,alpha,a,b,K,random,p)
+function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,lr,max_seasons,g,g_der,betha,n,alpha,a,b,K,random,p)
 	
 	tic_batch = tic();
 	N = size(t{1})(1); N2 = size(t2{1})(1); M = size(net)(2); I = size(t{1})(2); S = size(t{2})(2); 
@@ -135,10 +135,10 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,t2,lr1,lr2,max_s
     printf('Testing set Error: %f\n',E2);
     printf('Analyzed seasons:\t%d\n',seasons);
     printf('Analyzed patterns:\t%d\n',patterns);
-    lr_t1 = mean(((t{2}-V{M}).^2)' <= lr1);
+    lr_t1 = mean(((t{2}-V{M}).^2)' <= lr);
 	printf('Training Sample Learnt:\t%f%%\n',lr_t1*100);
 	V = feedfoward(net,t2{1},g,betha);
-	lr_t2 = mean(((t2{2}-V2{M}).^2)' <= lr2);
+	lr_t2 = mean(((t2{2}-V2{M}).^2)' <= lr);
     printf('Testing Sample Learnt:\t%f%%\n',lr_t2*100);
 
     smart_net = net;
