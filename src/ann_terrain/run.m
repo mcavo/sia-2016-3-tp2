@@ -17,3 +17,5 @@ if batch
 else
 	net = multilayer_perceptron_online_learning(nett,t,t2,err,lr,max_seasons,g,g_der,betha,n,alpha,a,b,K,random,p)
 end
+
+plotDiff

@@ -6,7 +6,7 @@ err=0.001; lr=0.01; betha=0.5; n=0.002; alpha=0.9; a=0.002; b=0.1; K = 5; random
 smart_initialization = 0; minlim=-0.5; maxlim=0.5;
 max_seasons = 500000;
 
-tanh_f = 1
+tanh_f = 1;
 
 % All the terrain
 terr=load("../../data/terrain5-sorted.txt");
