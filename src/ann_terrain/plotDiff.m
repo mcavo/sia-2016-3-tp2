@@ -10,8 +10,18 @@ hold on
 plot3(terr(:,1),terr(:,2),terr(:,3),'r.')
 legend('Terrain');
 plot3(terr1(:,1),terr1(:,2),terr_out1,'g.','DisplayName','Training set');
+title('Terrain representation - Training set', 'fontsize', 20, 'fontname', 'avenir next');
+xlabel('x1', 'fontsize', 15, 'fontname', 'avenir next');
+ylabel('x2', 'fontsize', 15, 'fontname', 'avenir next');
+zlabel('z', 'fontsize', 15, 'fontname', 'avenir next');
+hold off
+
+figure(6)
+hold on
+plot3(terr(:,1),terr(:,2),terr(:,3),'r.')
+legend('Terrain');
 plot3(terr2(:,1),terr2(:,2),terr_out2,'b.','DisplayName','Testing set');
-title('Terrain representation', 'fontsize', 20, 'fontname', 'avenir next');
+title('Terrain representation - Testing set', 'fontsize', 20, 'fontname', 'avenir next');
 xlabel('x1', 'fontsize', 15, 'fontname', 'avenir next');
 ylabel('x2', 'fontsize', 15, 'fontname', 'avenir next');
 zlabel('z', 'fontsize', 15, 'fontname', 'avenir next');
