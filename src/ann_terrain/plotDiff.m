@@ -20,7 +20,7 @@ figure(6)
 hold on
 plot3(terr(:,1),terr(:,2),terr(:,3),'r.')
 legend('Terrain');
-plot3(terr2(:,1),terr2(:,2),terr_out2,'b.','DisplayName','Testing set');
+plot3(terr2(:,1),terr2(:,2),terr_out2,'g.','DisplayName','Testing set');
 title('Terrain representation - Testing set', 'fontsize', 20, 'fontname', 'avenir next');
 xlabel('x1', 'fontsize', 15, 'fontname', 'avenir next');
 ylabel('x2', 'fontsize', 15, 'fontname', 'avenir next');

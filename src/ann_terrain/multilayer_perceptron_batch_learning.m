@@ -42,21 +42,23 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,lr,max_se
 	alpha_val = alpha; counter = 0;
 	seasons = 0; patterns = 0;
 
-	xerr(1) = 0; yerr(1) = E; xerr2(1) = 0; yerr2(1) = E2; xetha(1) = 0; yetha(1) = n;
+	xerr(1) = 0; yerr(1) = E; xerr2(1) = 0; yerr2(1) = E2;
 
 	figure (1)
 	plot(xerr(1), yerr(1));
 	vh = get(gca,'children');
-	title('Error variation', 'fontsize', 20);
+	title('Error - Training set', 'fontsize', 20);
     xlabel('Step [Season]', 'fontsize', 15, 'fontname', 'avenir next');
     ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
-    figure(2)
-	plot(xetha(1), yetha(1));
-	vh2 = get(gca,'children');
-	title('Etha variation', 'fontsize', 20, 'fontname', 'avenir next');
-    xlabel('Step [Season]', 'fontsize', 15, 'fontname', 'avenir next');
-    ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
-    
+    if (a != 0 && b != 0)
+    	xetha(1) = 0; yetha(1) = n;
+	    figure(2)
+		plot(xetha(1), yetha(1));
+		vh2 = get(gca,'children');
+		title('Etha', 'fontsize', 20, 'fontname', 'avenir next');
+	    xlabel('Step [Season]', 'fontsize', 15, 'fontname', 'avenir next');
+	    ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
+    end
 
     for m=1:M
 		oldDeltaW{m} = zeros(size(net{m}));
@@ -107,9 +109,10 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,lr,max_se
 		if(mod(seasons,5000)==0)
 			figure(1)
 			set(vh, 'xdata',xerr, 'ydata', yerr);
-
-			figure(2)
-			set(vh2, 'xdata',xetha, 'ydata', yetha);
+			if(a!=0 && b!=0)
+				figure(2)
+				set(vh2, 'xdata',xetha, 'ydata', yetha);
+			end
 		end
     end
 
@@ -117,16 +120,17 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,lr,max_se
 
     figure(1)
 	set(vh, 'xdata',xerr, 'ydata', yerr);
-
-	figure(2)
-	set(vh2, 'xdata',xetha, 'ydata', yetha);
+	if(a!=0 && b!=0)
+		figure(2)
+		set(vh2, 'xdata',xetha, 'ydata', yetha);
+	end
 
 	figure(3)
 	hold on
 	plot(xerr2, yerr2, 'r');
 	legend('Testing set');
 	plot(xerr, yerr, 'g', 'DisplayName', 'Training set');
-	title('Error variation - Testing set vs Training set', 'fontsize', 20);
+	title('Error - Testing set vs Training set', 'fontsize', 20);
     xlabel('Step [Season]', 'fontsize', 15, 'fontname', 'avenir next');
     ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
 	hold off
