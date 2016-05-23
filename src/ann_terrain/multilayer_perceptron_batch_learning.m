@@ -62,7 +62,7 @@ function smart_net = multilayer_perceptron_batch_learning(net,t,t2,err,lr,max_se
 		oldDeltaW{m} = zeros(size(net{m}));
 	end
 
-    while (E > lr1 && seasons < max_seasons)
+    while (E > err && seasons < max_seasons)
 
     	seasons = seasons+1;
     	patterns = patterns+N;
